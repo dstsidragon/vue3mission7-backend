@@ -40,8 +40,16 @@ const routes = [
     component: () => import('../views/Dashboard.vue'),
     children: [
       {
+        path: '',
+        component: () => import('../views/backend/Index.vue'),
+      },
+      {
         path: '/productsControl',
         component: () => import('../views/backend/ProductsControl.vue'),
+      },
+      {
+        path: '/articles',
+        component: () => import('../views/backend/Articles.vue'),
       },
       {
         path: '/ordersList',

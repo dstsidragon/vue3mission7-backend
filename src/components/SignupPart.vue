@@ -84,9 +84,6 @@ export default {
         };
         // console.log(admin);
         this.$emit('signup-emit', admin);
-        this.username = '';
-        this.password = '';
-        this.passwordRepit = '';
       } else {
         alert('資料不得為空!!');
       }

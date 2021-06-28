@@ -253,8 +253,9 @@ export default {
         },
       };
       // console.log(product);
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`;
       this.$http
-        .post(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`, product)
+        .post(url, product)
         .then((res) => {
           // console.log(res);
           // 如果成功就執行

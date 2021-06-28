@@ -24,12 +24,12 @@
 @import "~bootstrap/scss/bootstrap";
 
 //客製化的scss
-@import './utily/_customBootstrap';
+@import './utily/customBootstrap';
 
 //bootstrap Api
 @import '~bootstrap/scss/utilities/api';
 // 工具
-@import './utily/_utily';
+@import './utily/utily';
 
 // 元件
 @import './components/btn';

@@ -155,7 +155,7 @@ export default {
         // 送出登入帳號資料做驗證
         this.$http.post(`${process.env.VUE_APP_API}/admin/signin`, adminInfo)
           .then((res) => {
-            // console.log(res);
+            console.log(res);
             // 如果成功就執行
             if (res.data.success) {
               // alert(`${res.data.message}!!`);
@@ -165,13 +165,14 @@ export default {
               // res塞到data
               this.statusPromptLogin = `${res.data.message}!!`;
               this.statuBoolLogin = true;
-              // 傳入變化的時間 讓元件的watch監聽
-              this.loginInFallOrSuccess = new Date();
               // 存到cookies
               document.cookie = `hexToken=${token}; expires=${new Date(expired)};username=${
                 this.username
               }`;
               document.cookie = `username=${this.username.split('@')[0]}; expires=${new Date(
+                expired,
+              )};`;
+              document.cookie = `email=${res.config.data.split('"')[3]}; expires=${new Date(
                 expired,
               )};`;
               // 跳轉頁面
@@ -184,8 +185,6 @@ export default {
               // res塞到data
               this.statusPromptLogin = `${res.data.message}!!請檢查帳號密碼!`;
               this.statuBoolLogin = false;
-              // 傳入變化的時間 讓元件的watch監聽
-              this.loginInFallOrSuccess = new Date();
             }
           })
           .catch((err) => {
@@ -200,8 +199,6 @@ export default {
         // res塞到data
         this.statusPromptLogin = '帳號密碼錯誤!';
         this.statuBoolLogin = false;
-        // 傳入變化的時間 讓元件的watch監聽
-        this.loginInFallOrSuccess = new Date();
       }
     },
     // 取得loginEmit
@@ -239,11 +236,11 @@ export default {
             // console.log(res);
             // 如果成功就執行
             if (res.data.success) {
-              // console.log(res);
-              // alert(`${res.data.message}!!`);
               // res塞到data
               this.statusPromptSignup = `${res.data.message}!!`;
+              // 改變狀態顏色
               this.statuBoolSignup = true;
+
               // 傳入變化的時間 讓元件的watch監聽
               this.signUpFallOrSuccess = new Date();
             } else {
@@ -316,14 +313,11 @@ export default {
       this.$refs.Signup.$refs.signupForm.resetForm();
     },
   },
-  created() {
-  },
 };
 </script>
 <style lang="scss">
 .loginBackground{
   height: 1000px;
   background-color: #000;
-    // background-image: url("https://images.unsplash.com/photo-1496167117681-944f702be1f4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1778&q=80");
 }
 </style>

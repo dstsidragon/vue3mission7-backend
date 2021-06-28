@@ -3,7 +3,7 @@ $utilities: map-merge(
   (
     'rounded': (
       responsive: true,  //是否要響應式斷點
-      property: font-sizes,  //屬性
+      property: font-size,  //屬性
       class: fz,        //class名稱
       values: (
         0: 0.875rem,             //class參數 : 屬性值

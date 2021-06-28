@@ -5,6 +5,8 @@ import { createApp } from 'vue';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 
+// 匯入時間轉換js
+import toLocaleDate from '@/assets/js/date';
 // 匯入 Bootstrap 主套件
 import 'bootstrap';
 
@@ -46,6 +48,9 @@ app.component('Form', Form);
 app.component('Field', Field);
 app.component('ErrorMessage', ErrorMessage);
 
+// 匯入時間轉換js
+
+app.config.globalProperties.$toLocaleDate = toLocaleDate;
 // 註冊 axios 全域元件
 app.use(VueAxios, axios);
 
