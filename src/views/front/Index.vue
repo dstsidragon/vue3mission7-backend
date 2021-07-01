@@ -2,7 +2,7 @@
   <div class="position-relative">
     <div class="banner"></div>
     <div class="banner__font bgc-transparent rounded text-dark ff-HachiMaruPop">
-      <span class="banner__subtitle">創意演繹極致口感</span>
+      <p class="banner__subtitle">創意演繹極致口感</p>
       <br>
       <p >-勾起你心中的餓</p>
     </div>
