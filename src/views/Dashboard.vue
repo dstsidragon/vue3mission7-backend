@@ -273,7 +273,7 @@ background-size: 45%;
   text-indent: 101%;
   overflow: hidden;
   white-space: nowrap; }
-@media (min-width: 570px){
+@media (min-width: 631px){
     .Main{
         margin-left: 206px !important;
     }
@@ -291,7 +291,7 @@ background-size: 45%;
     }
   }
  }
-@media(max-width:570px){
+@media(max-width:630px){
     .sidebar{
         display: none !important;
     }

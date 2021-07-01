@@ -78,6 +78,8 @@ $dark:          $gray-900 !default;
 $blue-dark:          #0054d1 !default;
 $primary-lighten:    #dda62e !default;
 $yellow-lighten:    #E8F0F2 !default;
+$gray-lighten:    #d0d0cd !default;
+
 // scss-docs-end theme-color-variables
 
 // scss-docs-start theme-colors-map
@@ -93,6 +95,7 @@ $theme-colors: (
   "blue-dark": $blue-dark ,
   "primary-lighten": $primary-lighten,
   "yellow-lighten" : $yellow-lighten,
+   "gray-lighten" : $gray-lighten,
 ) !default;
 // scss-docs-end theme-colors-map
 
@@ -315,7 +318,8 @@ $paragraph-margin-bottom:   1rem !default;
 // scss-docs-start grid-breakpoints
 $grid-breakpoints: (
   xs: 0,
-  sm: 576px,
+  ssm: 360px,
+  sm: 630px,
   md: 768px,
   lg: 992px,
   xl: 1200px,

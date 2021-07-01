@@ -18,7 +18,7 @@
           ></button>
         </div>
         <div class="modal-body">
-          <Form ref="creatForm" v-slot="{ errors }" class="row g-3">
+          <Form ref="creatForm" v-slot="{ errors }" class="row g-3" @submit="closeModal">
             <!-- 姓名 -->
             <div class="col-md-6">
               <label for="name" class="form-label">姓名:</label>
@@ -96,15 +96,12 @@
                 v-model="userData.message"
               ></textarea>
             </div>
-
-            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" >
+                抱歉!錢錢，我真的需要這些酷東西
+              </button>
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                 下個月在解決你們!
               </button>
-              <button type="submit" class="btn btn-primary" @click.prevent="closeModal">
-                抱歉!錢錢，我真的需要這些酷東西
-              </button>
-            </div>
           </Form>
         </div>
       </div>

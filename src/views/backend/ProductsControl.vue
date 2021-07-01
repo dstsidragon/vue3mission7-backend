@@ -1,23 +1,24 @@
 /* eslint-disable radix */
 <template>
+    <h2 class="shadow-sm p-3 mt-1 mb-5 bg-yellow-lighten text-primary
+    rounded fz-3 fz-sm-4">商品管理</h2>
   <!-- 新增產品 start-->
-  <div class='container mt-5'>
+  <div class='container mt-5 justify-content-evenly d-flex align-items-center'>
     <!-- Button trigger modal -->
-    <p>
       <button
-        class='btn btn-primary'
+        class='btn btn-primary '
         type='button'
         @click='clearProductData'
       >
         新增產品
       </button>
-    </p>
-    <button class='btn btn-primary' type='button' @click='OneKeyAddDefaultProduct'>
+    <button class='btn btn-primary d-none d-sm-block'
+    type='button' @click='OneKeyAddDefaultProduct'>
       一鑑輸入預設商品
     </button>
     <button
       :class="{ 'd-none': !this.productDataAll }"
-      class='btn btn-danger'
+      class='btn btn-danger d-none d-sm-block'
       type='button'
       @click='OneKeyDelAllProduct'
     >
@@ -37,14 +38,14 @@
         <thead class='co1-12'>
           <tr class='row'>
             <th class='col-3 d-none d-md-table-cell'>產品圖片</th>
-            <th class='col-3'>產品名稱</th>
-            <th class='col-2 col-md-1' width='120'>
+            <th class='col-3 '>產品名稱</th>
+            <th class='col-2 col-md-1 d-none d-ssm-table-cell' width='120'>
               原價
             </th>
-            <th class='col-2 col-md-1'>
+            <th class='col-3 col-ssm-2 col-md-1'>
               售價
             </th>
-            <th class='col-2'>
+            <th class='col-3 col-ssm-2'>
               是否啟用
             </th>
             <th class='col-3 col-md-2'>
@@ -57,14 +58,17 @@
             <td class='col-3 d-none d-md-table-cell d-flex align-items-center'>
               <img class='prd_img' :src='item.imageUrl' alt='' />
             </td>
-            <td class='col-3  d-flex align-items-center'>{{ item.title }}</td>
-            <td class='col-2 col-md-1 d-flex align-items-center'>
+            <td class='col-3  d-flex justify-content-center
+            align-items-center'>{{ item.title }}
+            </td>
+            <td class='col-2 col-md-1 d-none d-ssm-table-cell
+             d-flex justify-content-center align-items-center'>
               {{ item.origin_price }}
             </td>
-            <td class='col-2 col-md-1 d-flex align-items-center'>
+            <td class='col-3 col-ssm-2 col-md-1 justify-content-center d-flex align-items-center'>
               {{ item.price }}
             </td>
-            <td class='col-2  d-flex align-items-center'>
+            <td class='col-3 col-ssm-2  d-flex justify-content-center align-items-center'>
               <div class='onoffswitch'>
                 <input
                   type='checkbox'
@@ -102,7 +106,7 @@
                 <label class='onoffswitch-label' :for="'myonoffswitch_' + item.id"></label>
               </div>
             </td>
-            <td class='col-3 col-md-2 d-flex align-items-center'>
+            <td class='col-3 col-md-2 justify-content-center d-flex align-items-center'>
               <button
                 type='button'
                 :id="'redit_' + i"

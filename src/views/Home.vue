@@ -10,48 +10,52 @@ bg-transparent sticky-top  ">
     translate-middle" to="/">
     <img class="h-40"
     src="@/assets/images/logo4.svg" alt="logo"></router-link>
-    <button class="navbar-toggler "
+    <button class="navbar-toggler text-primary"
     type="button" data-bs-toggle="collapse"
     data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false"
     aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+    <span class="navbar-toggler-icon text-primary"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-between
     mt-4 mt-lg-0 " id="navbarText">
-      <ul class="navbar-nav  mb-2 mb-lg-0">
-        <li class="nav-link">
-          <router-link  class="d-block" aria-current="page" href="#"
-          to="/">首頁</router-link>
+      <ul class="navbar-nav   mb-lg-0">
+        <li  >
+          <router-link  class="nav-link fw-bold nav-drown "  href="#"
+          aria-current="page" to="/" @click="closeHamburger">首頁</router-link>
         </li>
-        <li class="nav-link">
-          <router-link  class="d-block" aria-current="page" href="#"
-          to="/products">商品列表</router-link>
+        <li>
+          <router-link  class="nav-link fw-bold nav-drown"  href="#"
+          to="/products" @click="closeHamburger">商品列表</router-link>
         </li>
-        <li class="nav-link">
-          <router-link class="d-block" to="/carts">購物車列表</router-link>
+        <li >
+          <router-link class="nav-link fw-bold nav-drown" to="/carts"
+           @click="closeHamburger">購物車列表</router-link>
         </li>
-        <li class="nav-link">
-          <router-link class="d-block" to="/orders">訂單列表</router-link>
+        <li>
+          <router-link class="nav-link fw-bold nav-drown" to="/orders"
+          @click="closeHamburger">訂單列表</router-link>
         </li>
-        <li class="nav-link">
-          <router-link class="d-block" to="/admin">後台</router-link>
+        <li >
+          <router-link class="nav-link fw-bold nav-drown" to="/admin"
+          >後台</router-link>
         </li>
       </ul>
       <span class="navbar-text">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-link d-none d-lg-block ">
+        <li class="fw-bold nav-link d-none d-lg-block ">
           你好,{{userName}}
         </li>
-        <li class="nav-link">
-          <a   href="#" v-if="loginStatus"
+        <li >
+          <a class="nav-link fw-bold nav-drown "  href="#" v-if="loginStatus"
           @click.prevent="openiSgnOutUserModal">登出</a>
-          <a  href="#" v-else to="/Login">登入</a>
+          <a  class="nav-link fw-bold nav-drown" href="#" v-else to="/Login">登入</a>
         </li>
       </ul>
       </span>
     </div>
   </div>
 </nav>
+
 <Loading></Loading>
    <!-- 登出Modal -->
   <LoginOut ref="signOutUserModal" @sign-out-admin="signOutAdmin"></LoginOut>
@@ -151,6 +155,10 @@ export default {
         }
       });
     },
+    // 關閉漢堡選單
+    closeHamburger() {
+      $('#navbarText').removeClass('show');
+    },
   },
   created() {
     // 判斷使用者值
@@ -164,10 +172,37 @@ export default {
 </script>
 
 <style lang="scss">
+@import '../assets/scss/mixin/mixin';
 .top-20px{
   top:20px;
 }
 .top-50px{
   top:50px;
+}
+.nav-drown{
+  border-bottom: 5px solid transparent;
+    color: #7f5625 !important;
+  &:focus,&:hover{
+  color: #0054d1  !important;
+  border-bottom: 5px solid #0054d1 ;
+  }
+  @include pc{
+    font-size: 1.5rem;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top:#7f5625 1px dashed;
+    border-bottom: 0;
+    &:hover{
+    border-bottom: 0;
+    background-color: #7f5625;
+    color: #ffffff !important;
+
+  }
+  }
+}
+.navbar-collapse{
+  @include pc{
+  margin-bottom: -32px;
+  }
 }
 </style>

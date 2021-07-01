@@ -9,7 +9,7 @@
 
 
 @mixin  mobile{
-    @media(max-width: 568px){ @content; }
+    @media(max-width: 630px){ @content; }
 }
 @mixin  miniMobile{
     @media(max-width: 320px){ @content; }
