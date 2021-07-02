@@ -6,8 +6,11 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 
 // 匯入 amimate.css
-import VAnimateCss from 'v-animate-css';
-import animated from 'animate.css';
+// import animated from 'animate.css';
+import 'animate.css';
+
+// 匯入vue-kinesis
+import VueKinesis from 'vue-kinesis';
 
 // 匯入時間轉換js
 import toLocaleDate from '@/assets/js/toLocaleDate';
@@ -49,18 +52,20 @@ setLocale('zh_TW');
 
 const app = createApp(App);
 
+// 註冊 amimate.css
+// app.use(animated);
+
 // 註冊 vee-validate 三個全域元件
 app.component('Form', Form);
 app.component('Field', Field);
 app.component('ErrorMessage', ErrorMessage);
 
+// 使用vue-kinesis
+app.use(VueKinesis);
+
 // 匯入時間轉換js
 app.config.globalProperties.$toTimestamp = toTimestamp;
 app.config.globalProperties.$toLocaleDate = toLocaleDate;
-
-// 註冊 amimate.css
-app.use(VAnimateCss);
-app.use(animated);
 
 // 註冊 axios 全域元件
 app.use(VueAxios, axios);

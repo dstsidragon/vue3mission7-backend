@@ -1,21 +1,32 @@
 <template>
-<nav class="navbar navbar-expand-lg navbar-light bg-light overflow-hidden py-4 py-lg-0
-bg-transparent sticky-top  ">
+<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-padding
+ fixed-top  "  :class="navBarClass">
   <div class="container-fluid position-relative justify-content-end text-secondary">
-    <router-link class="navbar-brand position-absolute top-20px start-50 d-lg-none
+    <!-- LOGO start-->
+    <router-link class="navbar-brand position-absolute  nav-logo  start-50
     translate-middle " to="/">
-    <img class="h-40"
+    <img class="nav-logo-img"
     src="@/assets/images/logo4.svg" alt="logo"></router-link>
-    <router-link class="navbar-brand position-absolute top-50px start-50 d-none d-lg-block
+    <!-- <router-link class="navbar-brand position-absolute top-50px start-50 d-none d-lg-block
     translate-middle" to="/">
-    <img class="h-40"
-    src="@/assets/images/logo4.svg" alt="logo"></router-link>
-    <button class="navbar-toggler text-primary"
+    <img class="nav-logo-img"
+    src="@/assets/images/logo4.svg" alt="logo"></router-link> -->
+    <!-- LOGO end-->
+
+    <!-- 漢堡選單 start-->
+    <button v-if="btnHamStatus" class="navbar-toggler text-primary"
     type="button" data-bs-toggle="collapse"
     data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false"
-    aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon text-primary"></span>
+    aria-label="Toggle navigation" @click="openHamBtn">
+    <span class="material-icons text-primary">menu</span>
     </button>
+    <button v-else class="navbar-toggler text-primary"
+    type="button" data-bs-toggle="collapse"
+    data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false"
+    aria-label="Toggle navigation"  @click="closeHamBtn">
+    <span class="material-icons text-primary">close</span>
+    </button>
+    <!-- 漢堡選單 end-->
     <div class="collapse navbar-collapse justify-content-between
     mt-4 mt-lg-0 " id="navbarText">
       <ul class="navbar-nav   mb-lg-0">
@@ -40,7 +51,7 @@ bg-transparent sticky-top  ">
           >後台</router-link>
         </li>
       </ul>
-      <span class="navbar-text">
+      <span >
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="fw-bold nav-link d-none d-lg-block ">
           你好,{{userName}}
@@ -48,7 +59,8 @@ bg-transparent sticky-top  ">
         <li >
           <a class="nav-link fw-bold nav-drown "  href="#" v-if="loginStatus"
           @click.prevent="openiSgnOutUserModal">登出</a>
-          <a  class="nav-link fw-bold nav-drown" href="#" v-else to="/Login">登入</a>
+          <router-link  class="nav-link fw-bold nav-drown" href="#" v-else to="/Login">
+          登入</router-link>
         </li>
       </ul>
       </span>
@@ -97,9 +109,26 @@ export default {
         // 加到購物車鈕
         addCart: '',
       },
+      // NAVBAR 被景色
+      navBarClass: 'bg-transparent',
+      // 漢堡選單狀態
+      btnHamStatus: true,
     };
   },
   methods: {
+    // openHamBtn
+    openHamBtn() {
+      this.navBarClass = 'bg-veryGray';
+      this.btnHamStatus = !this.btnHamStatus;
+    },
+    // closeHamBtn
+    closeHamBtn() {
+      this.btnHamStatus = !this.btnHamStatus;
+      const bodyh = document.documentElement.scrollTop || document.body.scrollTop;
+      if (bodyh < 5) {
+        this.navBarClass = 'bg-transparent';
+      }
+    },
     // 登出
     signOutAdmin() {
       this.$http
@@ -184,14 +213,15 @@ export default {
       }
     },
     // NavBar滾動
-    jqScrollNavbar() {
-      $(window).scroll(() => {
-        if ($(window).scrollTop() > 5) {
-          $('.navbar').removeClass('bg-transparent');
-        } else {
-          $('.navbar').addClass('bg-transparent');
+    ScrollNavbar() {
+      window.onscroll = () => {
+        const bodyh = document.documentElement.scrollTop || document.body.scrollTop;
+        if (bodyh > 5) {
+          this.navBarClass = 'bg-veryGray';
+        } else if (bodyh < 5 && this.btnHamStatus) {
+          this.navBarClass = 'bg-transparent';
         }
-      });
+      };
     },
     // 關閉漢堡選單
     closeHamburger() {
@@ -204,7 +234,9 @@ export default {
   },
   mounted() {
     // NavBar滾動
-    this.jqScrollNavbar();
+    this.ScrollNavbar();
+  },
+  unmounted() {
   },
 };
 </script>
@@ -214,9 +246,7 @@ export default {
 .top-20px{
   top:20px;
 }
-.top-50px{
-  top:50px;
-}
+
 .nav-drown{
   border-bottom: 5px solid transparent;
     color: #7f5625 !important;
@@ -241,6 +271,25 @@ export default {
 .navbar-collapse{
   @include pc{
   margin-bottom: -32px;
+  }
+}
+.nav-logo{
+    top:45px;
+     @include pc {
+    top:20px;
+    }
+
+    &-img{
+    height: 80px !important;
+    @include pc {
+    height:60px !important;
+    }
+    }
+  }
+.navbar-padding{
+  padding: 0px;
+  @include pc{
+    padding: 15px;
   }
 }
 </style>

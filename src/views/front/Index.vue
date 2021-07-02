@@ -1,11 +1,26 @@
 <template>
   <div class="position-relative">
-    <div class="banner"></div>
-    <div class="banner__font bgc-transparent rounded text-dark ff-HachiMaruPop">
-      <p class="banner__subtitle">創意演繹極致口感</p>
-      <br>
-      <p >-勾起你心中的餓</p>
-    </div>
+    <!-- <div class="banner"></div> -->
+    <Swiper/>
+    <kinesis-container class="banner__font bgc-transparent rounded text-primary
+     ff-HachiMaruPop p-4">
+              <kinesis-element :strength="15" class="banner__subtitle">
+                創意演繹極致口感
+              </kinesis-element>
+              <kinesis-element :strength="30">
+                -勾起你心中的餓
+              </kinesis-element>
+                <div class="d-flex justify-content-center  pt-4">
+                  <router-link  class="btn btn-primary px-2 d-flex
+                  justify-content-center align-items-center"  href="#"
+          to="/products" >
+          <i class="material-icons">
+          store
+          </i>
+          前往購物
+          </router-link>
+          </div>
+          </kinesis-container>
   <div class="box"></div>
    <!-- 讀取畫面 start -->
   <div class="container">
@@ -17,10 +32,12 @@
 
 <script>
 import Loading from '@/components/Loading.vue';
+import Swiper from '@/components/Swiper.vue';
 
 export default {
   components: {
     Loading,
+    Swiper,
   },
   data() {
     return {
@@ -40,17 +57,29 @@ export default {
 @import '@/assets/scss/mixin/_mixin';
 
 .banner{
-  height: 600px;
+  min-height: 100vh;
+  // background-attachment: fixed;
+  &-img1{
   background: center center no-repeat
-    // url('https://images.unsplash.com/photo-1621857426350-ddab819cf0cc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2700&q=80');
-    //  url('https://images.unsplash.com/photo-1591299177061-2151e53fcaea?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=925&q=80');
-     url('https://images.unsplash.com/photo-1575613425642-7ff66d570b52?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80');
+    url('https://images.unsplash.com/photo-1621857426350-ddab819cf0cc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2700&q=80');
+  background-size: cover;
+  opacity: 0.5 !important;
+  }
+  &-img2{
+  background: center center no-repeat
+    url('https://images.unsplash.com/photo-1591299177061-2151e53fcaea?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=925&q=80');
+  background-size: cover;
+  opacity: 0.5 !important;
+  }
+  &-img3{
+  background: center center no-repeat
+    url('https://images.unsplash.com/photo-1575613425642-7ff66d570b52?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80');
 
   background-size: cover;
-  background-attachment: fixed;
-  opacity: 0.5;
-
+  opacity: 0.5 !important;
+  }
   &__font{
+    z-index: 1000;
   position:absolute;
   top:20%;
   left:5%;

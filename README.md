@@ -165,3 +165,20 @@ import DeleteAll from '@/components/DeleteAll.vue';
                 @click='this.$refs.deleteAllModal.openModal();'
 
 //////////
+
+
+前台>>產品>>你可能會喜歡
+https://swiperjs.com/demos#
+
+前台>>產品>>詳細>>圖片
+https://codesandbox.io/s/xntne
+
+前台>>首頁>>滿版介紹
+https://swiperjs.com/demos/360-parallax/core.html
+
+
+前台>>NAVBAR>>手機板
+https://codesandbox.io/s/nqfd2
+
+前台 >> 結帳>>進度條
+https://bootstrap5.hexschool.com/docs/5.0/components/progress/
