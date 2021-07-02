@@ -1,16 +1,15 @@
 <template>
   <div
-    ref="addCouponModal"
     class="modal fade"
-    id="addCoupon"
+    ref="reditCouponModal"
     tabindex="-1"
-    aria-labelledby="addCouponModal"
+    aria-labelledby="exampleModalLabel"
     aria-hidden="true"
   >
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title" id="addCouponModal">新增優惠券</h5>
+          <h5 class="modal-title fz-4" id="rediCouponModal">編輯優惠券</h5>
           <button
             type="button"
             class="btn-close"
@@ -19,31 +18,31 @@
           ></button>
         </div>
         <div class="modal-body fs-2">
-          <Form ref="addOrderForm" v-slot="{ errors }"  @submit="addCouponData">
+          <Form ref="addOrderForm" v-slot="{ errors }"  @submit="reditOneData">
           <div class="card card-body ">
          <div class=" d-flex flex-wrap justify-content-around mb-2">
               <div class="form-group ">
-                <label for="title">標題</label>
+                <label for="redititle">標題</label>
                 <Field
                 type="text"
-                id="title"
+                id="redititle"
                 name="標題"
                 placeholder="請輸入標題"
                 :class="{ 'is-invalid': errors['標題'] }"
                 rules="required"
                 class="form-control"
                 required
-                v-model="addCoupon.title"
+                v-model="rediData.title"
               />
               <error-message name="標題" class="invalid-feedback"></error-message>
               </div>
 
               <div class="form-group">
-                <label for="percent">折扣</label>
+                <label for="redipercent">折扣</label>
                 <Field
                   type="number"
                   style="width:202px"
-                  id="percent"
+                  id="redipercent"
                   name="折扣"
                   :class="{ 'is-invalid': errors['折扣'] }"
                 rules="required"
@@ -52,39 +51,41 @@
                   oninput="value=value.replace('-', '')"
                   placeholder="請輸入折扣"
                   class="form-control"
-                  v-model="addCoupon.percent"
+                  v-model="rediData.percent"
                 />
               <error-message name="折扣" class="invalid-feedback"></error-message>
               </div>
             </div>
             <div class=" d-flex flex-wrap justify-content-around mb-2">
               <div class="form-group ">
-                <label for="due_date">到期日</label>
+                <label for="redidue_date">到期日</label>
                 <Field
+                ref="date"
                   style="width:202px"
                   type="date"
-                  id="due_date"
+                  id="redidue_date"
                   name="到期日"
                   :class="{ 'is-invalid': errors['到期日'] }"
-                rules="required"
+                   rules="required"
                   class="form-control"
-                  v-model="addCoupon.due_date"
+                  :value="due_date"
+                  v-model="due_date"
                 />
               <error-message name="到期日" class="invalid-feedback"></error-message>
               </div>
 
               <div class="form-group col-md-5"
                   style="width:202px">
-                <label for="code">折扣碼</label>
+                <label for="redicode">折扣碼</label>
                 <Field
                   type="text"
-                  id="code"
+                  id="redicode"
                   name="折扣碼"
                   :class="{ 'is-invalid': errors['折扣碼'] }"
                   :rules="isCode"
                   placeholder="請輸入折扣碼"
                   class="form-control"
-                  v-model="addCoupon.code"
+                  v-model="rediData.code"
                 />
               <error-message name="折扣碼" class="invalid-feedback"></error-message>
               </div>
@@ -96,21 +97,21 @@
                   type="checkbox"
                   true-value="1"
                   false-value="0"
-                  id="is_enabled"
+                  id="rediis_enabled"
                   class="form-check-input"
-                  v-model="addCoupon.is_enabled"
+                  v-model="rediData.is_enabled"
                 />
-                <label for="is_enabled" class="form-check-label">
+                <label for="rediis_enabled" class="form-check-label">
                   是否使用
                 </label>
               </div>
             </div>
           </div>
-        <div class="d-grid gap-2  d-md-flex justify-content-md-around pt-1 ">
+        <div class="modal-footer d-block d-sm-flex">
           <button type="button" class="btn btn-secondary fs-2"
-          data-bs-dismiss="modal">取消建立</button>
+          data-bs-dismiss="modal">取消編輯</button>
           <button type="submit" class="btn btn-primary fs-2"
-           >建立優惠券</button>
+           >確認編輯</button>
         </div>
           </Form>
         </div>
@@ -122,37 +123,39 @@
 import Modal from 'bootstrap/js/dist/modal';
 
 export default {
+  props: ['rediDatas'],
   data() {
     return {
       user: {},
-      message: '',
-      modal: '',
-      addCoupon: {
-        is_enabled: 0,
+      Modal: '',
+      // 編輯資料索引
+      rediData: {
       },
+      due_date: '2021-07-04',
     };
   },
   methods: {
-    addCouponData() {
-      // 新增的產品資料
-      const product = {
-        title: this.addCoupon.title,
-        is_enabled: parseInt(this.addCoupon.is_enabled, 10),
-        percent: this.addCoupon.percent,
-        due_date: this.$toTimestamp(this.addCoupon.due_date),
-        code: this.addCoupon.code,
+    reditOneData() {
+      const reditNewData = {
+        title: this.rediData.title,
+        is_enabled: parseInt(this.rediData.is_enabled, 10),
+        percent: this.rediData.percent,
+        due_date: this.$toTimestamp(this.due_date),
+        code: this.rediData.code,
+        id: this.rediData.id,
       };
-      this.$emit('send', product);
+      console.log(reditNewData);
+      this.$emit('emit-redit-new-nata', reditNewData);
     },
     // 開啟modal
     openModal() {
       // 開啟modal
-      this.modal.show();
+      this.Modal.show();
     },
     // 隱藏modal
     closeModal() {
       // 隱藏modal
-      this.modal.hide();
+      this.Modal.hide();
     },
     // 驗證折扣碼格式
     isCode(value) {
@@ -161,8 +164,16 @@ export default {
       return dcode.test(value) ? true : '需要輸入4~8碼英數組合';
     },
   },
+  watch: {
+    rediDatas() {
+      this.rediData = this.rediDatas;
+      const date = this.$toLocaleDate(this.rediData.due_date).split('/');
+      // 轉成input date接受的格式
+      this.due_date = `${date[0]}-${(date[1] < 10 ? '0' : '')}${date[1]}-${(date[2] < 10 ? '0' : '')}${date[2]}`;
+    },
+  },
   mounted() {
-    this.modal = new Modal(this.$refs.addCouponModal);
+    this.Modal = new Modal(this.$refs.reditCouponModal);
   },
 };
 </script>

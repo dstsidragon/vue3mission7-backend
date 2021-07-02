@@ -2,6 +2,12 @@
   <!-- 購物車列表 start-->
   <div class="container mt_5p ">
     <div class="container">
+
+    <!-- Alert元件 start -->
+    <Alert class="alert-position"  v-if="alertMessage" :message="alertMessage"
+    :status="alertStatus" />
+    <!-- Alert元件 end -->
+
       <h2 class="text-center ">購物車列表</h2>
       <div class="d-flex justify-content-end">
         <button
@@ -138,6 +144,8 @@
 </template>
 
 <script>
+// Alert元件
+import Alert from '@/components/Alert.vue';
 // 送出訂單
 import Createorder from '@/components/CreateOrderModal.vue';
 // 讀取畫面
@@ -145,6 +153,8 @@ import Loading from '@/components/Loading.vue';
 
 export default {
   components: {
+    // Alert元件
+    Alert,
     // 送出訂單
     Createorder,
     // 讀取畫面
@@ -152,6 +162,9 @@ export default {
   },
   data() {
     return {
+      // alert元件參數
+      alertMessage: '',
+      alertStatus: false,
       // 讀取畫面
       isLoading: false,
       // 購物車資料
@@ -177,21 +190,34 @@ export default {
         .get(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`)
         .then((res) => {
           if (res.data.success) {
-            // console.log(res)
-            // console.log(res.data.data);
-
             this.cartList = res.data.data;
             // 關掉讀取畫面
             this.isLoading = false;
           } else {
-            alert(res.data.message);
+            // alert(res.data.message);
+            this.alertMessage = res.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
             // 關掉讀取畫面
             this.isLoading = false;
           }
         })
         .catch((err) => {
           // console.log(err)
-          alert(err.data.message);
+          // alert(err.data.message);
+          this.alertMessage = err.data.message;
+          this.alertStatus = false;
+          setTimeout(
+            () => {
+              this.alertMessage = '';
+              this.alertStatus = false;
+            }, 2000,
+          );
           // 關掉讀取畫面
           this.isLoading = false;
         });
@@ -203,20 +229,44 @@ export default {
       this.$http
         .delete(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart/${id}`)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (res.data.success) {
             // 刷新購物車
             this.getCartList();
             // 清空讀取狀態
             this.loadingStatue.delCart = '';
-            alert(res.data.message);
+            // alert(res.data.message);
+            this.alertMessage = res.data.message;
+            this.alertStatus = true;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
           } else {
-            alert(res.data.message);
+            // alert(res.data.message);
+            this.alertMessage = res.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
           }
         })
         .catch((err) => {
           // console.log(err);
-          alert(err.data.message);
+          // alert(err.data.message);
+          this.alertMessage = err.data.message;
+          this.alertStatus = false;
+          setTimeout(
+            () => {
+              this.alertMessage = '';
+              this.alertStatus = false;
+            }, 2000,
+          );
         });
     },
     // 清空購物車商品
@@ -230,15 +280,44 @@ export default {
           if (res.data.success) {
             // 刷新購物車
             this.getCartList();
-            alert(res.data.message);
+            // alert(res.data.message);
+
+            // alert 元件顯示
+            this.alertMessage = res.data.message;
+            this.alertStatus = true;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
             this.loadingStatue.clearCart = '';
           } else {
-            alert(res.data.message);
+            // alert(res.data.message);
+          // alert 元件顯示
+            this.alertMessage = res.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
           }
         })
         .catch((err) => {
           // console.log(err);
-          alert(err.data.message);
+          // alert(err.data.message);
+
+          // alert 元件顯示
+          this.alertMessage = err.data.message;
+          this.alertStatus = false;
+          setTimeout(
+            () => {
+              this.alertMessage = '';
+              this.alertStatus = false;
+            }, 2000,
+          );
         });
     },
     // 改動購物車商品數量
@@ -255,12 +334,30 @@ export default {
           if (res.data.success) {
             this.getCartList();
           } else {
-            alert(res.data.message);
+            // alert(res.data.message);
+            // alert 元件顯示
+            this.alertMessage = res.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
           }
         })
         .catch((err) => {
           // console.log(err);
-          alert(err.data.message);
+          // alert(err.data.message);
+          // alert 元件顯示
+          this.alertMessage = err.data.message;
+          this.alertStatus = false;
+          setTimeout(
+            () => {
+              this.alertMessage = '';
+              this.alertStatus = false;
+            }, 2000,
+          );
         });
     },
     // 送出購物車訂單

@@ -9,7 +9,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title css_wordInput_13">請輸入討債資訊 ~ ~ (・ω・)</h5>
+          <h5 class="modal-title css_wordInput_13 fz-2 fz-sm-3">請輸入詳細資訊~ ~ (・ω・)</h5>
           <button
             type="button"
             class="btn-close"
@@ -107,14 +107,28 @@
       </div>
     </div>
   </div>
+<!-- Alert元件 start -->
+<Alert class=" alert-position"  v-if="alertMessage" :message="alertMessage"
+:status="alertStatus" />
+<!-- Alert元件 end -->
 </template>
 
 <script>
 import Modal from 'bootstrap/js/dist/modal';
+// Alert元件
+import Alert from '@/components/Alert.vue';
 
 export default {
+  emits: ['re-get-cart-list'],
+  components: {
+    // Alert元件
+    Alert,
+  },
   data() {
     return {
+      // alert元件參數
+      alertMessage: '',
+      alertStatus: false,
       user: {},
       Modal: '',
       userData: {
@@ -149,16 +163,40 @@ export default {
         .then((res) => {
           // console.log(res)
           if (res.data.success) {
-            alert(res.data.message);
+            // alert(res.data.message);
+            this.alertMessage = res.data.message;
+            this.alertStatus = true;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
             this.reGetCartList();
           } else {
-            alert(res.data.message);
+            // alert(res.data.message);
+            this.alertMessage = res.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
 
-          alert(err.data.message);
+          // alert(err.data.message);
+          this.alertMessage = err.data.message;
+          this.alertStatus = false;
+          setTimeout(
+            () => {
+              this.alertMessage = '';
+              this.alertStatus = false;
+            }, 2000,
+          );
         });
     },
     // 刷新購物車列表

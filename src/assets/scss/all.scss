@@ -1,11 +1,12 @@
 // css reset
 @import './base/cssReset';
 
-//  bootstrap
-@import '~bootstrap/scss/functions';
 
 // 字體
 @import './helpers/font';
+
+//  bootstrap
+@import '~bootstrap/scss/functions';
 
 // 客製化variables
 @import './helpers/variables';
@@ -25,6 +26,7 @@
 // 元件
 @import './components/btn';
 @import './components/btnEnable';
+@import './components/alert';
 
 // 套件
 @import "~hover.css/css/hover-min";

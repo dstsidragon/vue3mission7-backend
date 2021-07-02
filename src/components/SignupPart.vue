@@ -76,17 +76,13 @@ export default {
     sendData() {
       this.showStatus = true;
       // console.log(1)
-      if (this.username !== '' && this.password !== '' && this.password !== '') {
-        const admin = {
-          username: this.username,
-          password: this.password,
-          passwordRepit: this.passwordRepit,
-        };
-        // console.log(admin);
-        this.$emit('signup-emit', admin);
-      } else {
-        alert('資料不得為空!!');
-      }
+      const admin = {
+        username: this.username,
+        password: this.password,
+        passwordRepit: this.passwordRepit,
+      };
+      // console.log(admin);
+      this.$emit('signup-emit', admin);
     },
     // 驗證信箱格式
     isEmail(value) {

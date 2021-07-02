@@ -35,4 +35,11 @@
         max-width: 1170px;
         margin: 1.75rem auto;
     }
+  } 
+  .btn-primary{
+    &:hover,&:focus,&:active:hover{
+    color: #7f5625;
+    background-color:   #fff;
+    border-color:   #7f5625;
+    }
   }

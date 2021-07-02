@@ -32,14 +32,29 @@
             </div>
           </div>
           </div>
+          <!-- Alert元件 start -->
+          <Alert class="alert-position"  v-if="alertMessage"
+           :message="alertMessage"
+          :status="alertStatus" />
+          <!-- Alert元件 end -->
 </template>
 
 <script>
+// Alert元件
+import Alert from '@/components/Alert.vue';
+
 export default {
+  components: {
+    // Alert元件
+    Alert,
+  },
   data() {
     return {
       id: this.$route.params.id,
       product: '',
+      // alert元件參數
+      alertMessage: '',
+      alertStatus: false,
     };
   },
   methods: {
@@ -51,20 +66,49 @@ export default {
           // console.log(res);
           // 如果成功就執行
           if (res.data.success) {
-            console.log(res.data);
+            // console.log(res.data);
+
+            // alert 元件顯示
+            this.alertMessage = res.data.message;
+            this.alertStatus = true;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
             this.product = res.data.product;
           } else {
-            alert('驗證錯誤，請重新登入!');
-            console.log(res);
+            // alert('驗證錯誤，請重新登入!');
+            // console.log(res);
+
+            // alert 元件顯示
+            this.alertMessage = res.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
+          // alert 元件顯示
+          this.alertMessage = err.data.message;
+          this.alertStatus = false;
+          setTimeout(
+            () => {
+              this.alertMessage = '';
+              this.alertStatus = false;
+            }, 2000,
+          );
         });
     },
   },
   created() {
-    console.log(this.$route.params.id);
+    // console.log(this.$route.params.id);
   },
   mounted() {
     // 取得產品資訊

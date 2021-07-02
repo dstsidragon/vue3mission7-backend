@@ -54,10 +54,10 @@ V分頁功能
 
 V串接取得
 V新增
-刪除
-更新優惠券 API
-啟用狀態顯示
-Modal 細節欄位
+V刪除
+V更新優惠券 API
+V啟用狀態顯示
+VModal 細節欄位
 V分頁功能
 
 #貼文頁面（加分項目）：
@@ -69,9 +69,9 @@ Modal 細節欄位
 登入 / 登出
 
 小功能
-時間搓轉換
+V時間搓轉換
 千分符號
-alert 元件
+Valert 元件
 Vloading 元件
 V串接圖片上傳 API
 
@@ -95,3 +95,73 @@ LV3：完成以上功能及撰寫完整的產品文案、圖片
 
   
         "payment_method": "credit_card",
+
+
+
+
+///////////////////
+
+<!-- Alert元件 start -->
+<Alert class="alert-position"  v-if="alertMessage" :message="alertMessage"
+:status="alertStatus" />
+<!-- Alert元件 end -->
+
+
+// Alert元件
+import Alert from '@/components/Alert.vue';
+
+
+    // Alert元件
+    Alert,
+
+      // alert元件參數
+      alertMessage: '',
+      alertStatus: false,
+
+
+
+          // alert 元件顯示
+          this.alertMessage = res.data.message;
+          this.alertStatus = true;
+          setTimeout(
+            () => {
+              this.alertMessage = '';
+              this.alertStatus = false;
+            }, 2000,
+          );
+
+//////////
+
+
+////////// 刪除單一元件
+
+  <!-- 刪除單一Modal start-->
+  <Delete ref="deleteModal"  @send="delOneData" />
+  <!-- 刪除單一Modal end-->
+
+
+// 刪除單一Modal
+import Delete from '@/components/Delete.vue';
+
+    // 刪除單一Modal
+    Delete,
+
+    
+                @click='this.$refs.deleteModal.openModal(item)'
+//////////
+
+/////////刪除全部
+
+  <!-- 刪除全部Modal start-->
+  <DeleteAll ref="deleteAllModal"  @send="deleteAll" />
+  <!-- 刪除全部Modal end-->
+
+    // 刪除全部 Modal
+    DeleteAll,
+
+// 刪除全部 Modal
+import DeleteAll from '@/components/DeleteAll.vue';
+
+                @click='this.$refs.deleteAllModal.openModal();'
+
+//////////

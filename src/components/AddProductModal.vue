@@ -9,8 +9,8 @@
   >
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addProductModal">新增產品</h5>
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title fz-4" id="addProductModal">新增商品</h5>
           <button
             type="button"
             class="btn-close"
@@ -18,88 +18,127 @@
             aria-label="Close"
           ></button>
         </div>
-        <div class="modal-body">
+        <Form  class="form" ref="addPrdForm" v-slot="{ errors }" @submit="addPrductData">
+        <div class="modal-body fs-2">
           <div class="card card-body row">
             <div class="form-group mb-2">
               <label for="bg_add_title2">標題</label>
-              <input
+              <Field
                 type="text"
                 id="bg_add_title2"
                 placeholder="請輸入標題"
                 class="form-control"
-                required
+                name="標題"
+                :class="{ 'is-invalid': errors['標題'] }"
+                rules="required"
                 v-model="addProducts.bg_add_title"
               />
+              <error-message name="標題" class="invalid-feedback"></error-message>
             </div>
 
             <div class="form-group mb-2">
               <label for="bg_add_description2">描述</label>
-              <textarea
+              <Field
+               as="textarea"
                 type="text"
                 id="bg_add_description2"
                 placeholder="請輸入描述"
                 class="form-control"
+                name="描述"
+                :class="{ 'is-invalid': errors['描述'] }"
+                rules="required"
                 v-model="addProducts.bg_add_description"
-              ></textarea>
+              ></Field>
+              <error-message name="描述" class="invalid-feedback"></error-message>
             </div>
             <div class="form-group mb-2">
-              <label for="bg_add_content">說明</label>
-              <textarea
+              <label for="bg_add_content">介紹</label>
+              <Field
+               as="textarea"
                 type="text"
                 id="bg_add_content"
-                placeholder="請輸入說明"
+                placeholder="請輸入詳細"
+                name="介紹"
+                :class="{ 'is-invalid': errors['介紹'] }"
+                rules="required"
                 class="form-control"
                 v-model="addProducts.bg_add_content"
-              ></textarea>
+              ></Field>
+              <error-message name="介紹" class="invalid-feedback"></error-message>
             </div>
-            <div class="form-row d-flex flex-wrap justify-content-between mb-2">
-              <div class="form-group col-md-5">
+            <div class="form-row d-flex flex-wrap justify-content-center
+             justify-content-sm-between mb-2">
+              <div class="form-group col-12 col-md-5">
                 <label for="bg_add_category2">分類</label>
-                <input
-                  type="text"
+                <Field
+                as="select"
                   id="bg_add_category2"
                   placeholder="請輸入分類"
+                  name="分類"
+                :class="{ 'is-invalid': errors['分類'] }"
+                rules="required"
                   class="form-control"
                   v-model="addProducts.bg_add_category"
-                />
+                >
+                <option value="" disabled>點擊選取分類</option>
+                <option>經典麵包</option>
+                <option>西式甜點</option>
+                <option>特調飲品</option>
+                <option>手做餅乾</option>
+                <option>典藏蛋糕</option>
+                </Field>
+              <error-message name="分類" class="invalid-feedback"></error-message>
               </div>
 
-              <div class="form-group col-md-5">
+              <div class="form-group  col-12 col-md-5">
                 <label for="bg_add_unit">單位</label>
-                <input
+                <Field
                   type="unit"
                   id="bg_add_unit"
                   placeholder="請輸入單位"
+                name="單位"
+                :class="{ 'is-invalid': errors['單位'] }"
+                rules="required"
                   class="form-control"
                   v-model="addProducts.bg_add_unit"
                 />
+              <error-message name="單位" class="invalid-feedback"></error-message>
               </div>
             </div>
-            <div class="form-row d-flex flex-wrap justify-content-between mb-2">
-              <div class="form-group col-md-5">
+            <div class="form-row d-flex flex-wrap justify-content-center
+             justify-content-sm-between mb-2">
+              <div class="form-group col-12 col-md-5">
                 <label for="bg_add_origin_price">原價</label>
-                <input
+                <Field
                   type="number"
                   id="bg_add_origin_price"
                   placeholder="請輸入原價"
                   min="0"
+                  name="原價"
+                  :class="{ 'is-invalid': errors['原價'] }"
+                  rules="required"
                   oninput="value=value.replace('-', '')"
                   class="form-control"
                   v-model="addProducts.bg_add_origin_price"
                 />
+              <error-message name="原價" class="invalid-feedback"></error-message>
               </div>
 
-              <div class="form-group col-md-5">
+              <div class="form-group col-12 col-md-5">
                 <label for="bg_add_price">售價</label>
-                <input
+                <Field
                   type="number"
                   id="bg_add_price"
                   placeholder="請輸入售價"
                   class="form-control"
                   min="0"
+                  name="售價"
+                  :class="{ 'is-invalid': errors['售價'] }"
+                  rules="required"
                   oninput="value=value.replace('-', '')"
                   v-model="addProducts.bg_add_price"
                 />
+              <error-message name="售價" class="invalid-feedback"></error-message>
               </div>
             </div>
             <hr class="mt-5" />
@@ -241,20 +280,37 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" @click="closeModal"
           data-bs-dismiss="modal">取消</button>
-          <button type="button" class="btn btn-primary" @click="addPrductData"
+          <button type="submit" class="btn btn-primary"
            >建立產品資料</button>
         </div>
+        </Form>
       </div>
     </div>
   </div>
+<!-- Alert元件 start -->
+<Alert class="alert-position"  v-if="alertMessage" :message="alertMessage"
+:status="alertStatus" />
+<!-- Alert元件 end -->
 </template>
 <script>
 import Modal from 'bootstrap/js/dist/modal';
+// Alert元件
+import Alert from '@/components/Alert.vue';
 
 export default {
+  emits: [
+    'emit-product-data',
+  ],
   props: ['addProduct'],
+  components: {
+    // Alert元件
+    Alert,
+  },
   data() {
     return {
+      // alert元件參數
+      alertMessage: '',
+      alertStatus: false,
       modal: '',
       addProducts: {
         bg_add_title: '',
@@ -301,46 +357,54 @@ export default {
           ],
         },
       };
-      //   console.log(typeof this.addProduct.bg_add_is_enabled);
       this.$emit('emit-product-data', product);
-    //   this.closeModal();
     },
     // 開啟modal
     openModal() {
       // 開啟modal
       this.modal.show();
-      this.cleadData();
     },
     // 隱藏modal
     closeModal() {
       // 隱藏modal
       this.modal.hide();
-      this.cleadData();
     },
-    cleadData() {
-      this.addProducts = {
-        bg_add_price: null,
-        bg_add_origin_price: null,
-        bg_add_unit: '',
-        bg_add_category: '',
-        bg_add_content: '',
-        bg_add_description: '',
-        bg_add_title: '',
-        bg_add_is_enabled: false,
-        imageUrl: '',
-        imageUrls: {
-          url1: '',
-          url2: '',
-          url3: '',
-          url4: '',
-          url5: '',
-        },
-      };
+    // 圖片上傳
+    uploadImg() {
+      // console.dir(this.$refs.UpLoadImgInp.files[0]);
+      const img = this.$refs.UpLoadImgInp.files[0];
+      const imgFormData = new FormData();
+      imgFormData.append('file-to-upload', img);
+
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/upload`;
+      this.$http
+        .post(url, imgFormData)
+        .then((res) => {
+          // console.log(res);
+          if (res.data.success) {
+            this.addProducts.imageUrl = res.data.imageUrl;
+          }
+        })
+        .catch((err) => {
+          // console.log(err.data);
+          // alert(err.data);
+
+          // alert 元件顯示
+          this.alertMessage = err.data.message;
+          this.alertStatus = false;
+          setTimeout(
+            () => {
+              this.alertMessage = '';
+              this.alertStatus = false;
+            }, 2000,
+          );
+        });
     },
   },
   mounted() {
     this.modal = new Modal(this.$refs.addProductModal);
-    console.log(this.$refs.addProductModal);
+    // 賦予input,upload時觸發取得圖片網址
+    this.$refs.UpLoadImgInp.addEventListener('change', this.uploadImg, false);
   },
 };
 </script>

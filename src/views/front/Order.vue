@@ -39,7 +39,7 @@
                   </div>
                 </li>
               </ul>
-              <ul class="d-flex justify-content-between align-items-center fw-bold ">
+              <ul class="d-flex flex-wrap justify-content-between align-items-center fw-bold ">
                 <!-- <li><p>目前有{{cartsNum}}項產品</p></li> -->
                 <!-- <li>總共 {{item.product}} 項商品</li> -->
                 <li class="fs-3 text-danger">
@@ -71,20 +71,36 @@
       <ViewSellerModal ref="viewSeller"></ViewSellerModal>
       <!-- 賣家資訊 end-->
     </div>
+
+      <!-- Alert元件 start -->
+      <Alert class=" alert-position"  v-if="alertMessage" :message="alertMessage"
+      :status="alertStatus" />
+      <!-- Alert元件 end -->
   </div>
 </template>
 
 <script>
+// 分頁元件
 import Pagination from '@/components/Pagination.vue';
+// 查看賣家
 import ViewSellerModal from '@/components/ViewSellerModal.vue';
+// Alert元件
+import Alert from '@/components/Alert.vue';
 
 export default {
   components: {
+    // Alert元件
+    Alert,
+    // 分頁元件
     Pagination,
+    // 查看賣家
     ViewSellerModal,
   },
   data() {
     return {
+      // alert元件參數
+      alertMessage: '',
+      alertStatus: false,
       // 訂單資料
       orderList: {
       },
@@ -104,12 +120,28 @@ export default {
             this.orderList = res.data;
             this.orderPagination = res.data.pagination;
           } else {
-            alert(res.data.message);
+            // alert(res.data.message);
+            this.alertMessage = res.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
           }
         })
         .catch((err) => {
           // console.log(err)
-          alert(err.data.message);
+          // alert(err.data.message);
+          this.alertMessage = err.data.message;
+          this.alertStatus = false;
+          setTimeout(
+            () => {
+              this.alertMessage = '';
+              this.alertStatus = false;
+            }, 2000,
+          );
         });
     },
     // 查看賣家
@@ -119,7 +151,15 @@ export default {
     },
     // 付款
     checkOut() {
-      alert('要付款嗎? 先看看賣家是誰好了~');
+      // alert('要付款嗎? 先看看賣家是誰好了~');
+      this.alertMessage = '要付款嗎? 先看看賣家是誰好了~';
+      this.alertStatus = true;
+      setTimeout(
+        () => {
+          this.alertMessage = '';
+          this.alertStatus = false;
+        }, 2000,
+      );
     },
   },
   mounted() {

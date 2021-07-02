@@ -1,0 +1,51 @@
+[
+    {
+        "name":"狂打7折",
+        "icon":"sentiment_very_satisfied",
+        "color":"text-danger",
+        "code":"papapa7"
+
+    },{
+       "name":"銘謝惠顧",
+       "icon":"sentiment_very_dissatisfied",
+       "color":"text-white",
+       "code":""
+
+   },{
+       "name":"打87折",
+       "icon":"sentiment_very_satisfied",
+       "color":"text-danger",
+       "code":"pa87la"
+
+   },{
+       "name":"別想打折",
+       "icon":"sentiment_very_dissatisfied",
+       "color":"text-white",
+       "code":""
+
+   },{
+       "name":"打67折",
+       "icon":"sentiment_very_satisfied",
+       "color":"text-danger",
+       "code":"67happy"
+
+   },{
+       "name":"再接再厲",
+       "icon":"sentiment_very_dissatisfied",
+       "color":"text-white",
+       "code":""
+
+   },{
+       "name":"全館半價",
+       "icon":"sentiment_very_satisfied",
+       "color":"text-danger",
+       "code":"ohmygod"
+
+   },{
+       "name":"下次再拚",
+       "icon":"sentiment_very_dissatisfied",
+       "color":"text-white",
+       "code":""
+
+   }
+]

@@ -4,6 +4,11 @@
     rounded fz-3 fz-sm-4">商品管理</h2>
   <!-- 新增產品 start-->
   <div class='container mt-5 justify-content-evenly d-flex align-items-center'>
+
+    <!-- Alert元件 start -->
+    <Alert class="alert-position"  v-if="alertMessage" :message="alertMessage"
+    :status="alertStatus" />
+    <!-- Alert元件 end -->
     <!-- Button trigger modal -->
       <button
         class='btn btn-primary '
@@ -17,10 +22,11 @@
       一鑑輸入預設商品
     </button>
     <button
+    v-if="dataLength>0"
       :class="{ 'd-none': !this.productDataAll }"
       class='btn btn-danger d-none d-sm-block'
       type='button'
-      @click='OneKeyDelAllProduct'
+      @click='this.$refs.deleteAllModal.openModal();'
     >
       一鑑刪除全部商品
     </button>
@@ -30,6 +36,10 @@
     </AddProductModal>
   </div>
   <!-- 新增產品 end-->
+
+  <!-- 刪除單一Modal start-->
+  <Delete ref="deleteModal"  @send="delOneData" />
+  <!-- 刪除單一Modal end-->
 
   <!-- 產品列表 -->
   <div class='container mt_5p '>
@@ -120,7 +130,7 @@
               <button
                 type='button'
                 :id="'del_' + item.id"
-                @click='delOneData'
+                @click='this.$refs.deleteModal.openModal(item)'
                 class='btn btn-sm btn-danger btn-right'
                 data-action='remove'
                 :data-id='item.id'
@@ -151,23 +161,50 @@
   <!-- 讀取畫面 start-->
   <Loading :isVueLoading='isLoading' />
   <!-- 讀取畫面 end -->
+
+  <!-- 刪除全部Modal start-->
+  <DeleteAll ref="deleteAllModal"  @send="OneKeyDelAllProduct" />
+  <!-- 刪除全部Modal end-->
   </div>
 </template>
 <script>
+// 刪除單一Modal
+import Delete from '@/components/Delete.vue';
+// 分頁
 import Pagination from '@/components/Pagination.vue';
+// 新增商品 Modal
 import AddProductModal from '@/components/AddProductModal.vue';
+// 編輯商品 Modal
 import ReditProductModal from '@/components/ReditProductModal.vue';
+// 讀取畫面
 import Loading from '@/components/Loading.vue';
+// Alert元件
+import Alert from '@/components/Alert.vue';
+// 刪除全部 Modal
+import DeleteAll from '@/components/DeleteAll.vue';
 
 export default {
   components: {
+    // 刪除全部 Modal
+    DeleteAll,
+    // 刪除單一Modal
+    Delete,
+    // Alert元件
+    Alert,
+    // 分頁
     Pagination,
+    // 新增商品 Modal
     AddProductModal,
+    // 編輯商品 Modal
     ReditProductModal,
+    // 讀取畫面
     Loading,
   },
   data() {
     return {
+      // alert元件參數
+      alertMessage: '',
+      alertStatus: false,
       // 讀取狀態
       isLoading: false,
       // 商品資料
@@ -235,20 +272,36 @@ export default {
             // 關掉讀取畫面
             this.isLoading = false;
           } else {
-            alert(res.data.message);
+            // alert(res.data.message);
+            this.alertMessage = res.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
             // 跳轉頁面
             this.$router.push('/login');
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
+          this.alertMessage = err.data.message;
+          this.alertStatus = false;
+          setTimeout(
+            () => {
+              this.alertMessage = '';
+              this.alertStatus = false;
+            }, 2000,
+          );
         });
     },
 
     // 刪除單一資料
     delOneData(e) {
-      const delId = e.target.dataset.id;
-      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product/${delId}`;
+      const { id } = e;
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product/${id}`;
       this.$http
         .delete(url)
         .then((res) => {
@@ -256,14 +309,38 @@ export default {
 
           // 如果成功就執行
           if (res.data.success) {
-            alert(`${res.data.message}`);
+            // alert(`${res.data.message}`);
+            this.alertMessage = res.data.message;
+            this.alertStatus = true;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
             this.getProduct();
           } else {
-            alert(`${res.data.message}`);
+            // alert(`${res.data.message}`);
+            this.alertMessage = res.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
+          this.alertMessage = err.data.message;
+          this.alertStatus = true;
+          setTimeout(
+            () => {
+              this.alertMessage = '';
+              this.alertStatus = false;
+            }, 2000,
+          );
         });
     },
     // 啟用/未啟用事件
@@ -287,12 +364,28 @@ export default {
           // console.log(res)
           // 如果成功就執行
           if (res.data.success) {
-            alert('已變更啟用狀態!');
+            // alert('已變更啟用狀態!');
+            this.alertMessage = res.data.message;
+            this.alertStatus = true;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
             this.getProduct();
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
+          this.alertMessage = err.data.message;
+          this.alertStatus = false;
+          setTimeout(
+            () => {
+              this.alertMessage = '';
+              this.alertStatus = false;
+            }, 2000,
+          );
         });
     },
 
@@ -314,9 +407,17 @@ export default {
         this.$http
           .post(url, emitproductData)
           .then((res) => {
-            alert(res.data.message);
+            // alert(res.data.message);
             // 如果成功就執行
             if (res.data.success) {
+              this.alertMessage = res.data.message;
+              this.alertStatus = true;
+              setTimeout(
+                () => {
+                  this.alertMessage = '';
+                  this.alertStatus = false;
+                }, 2000,
+              );
               // 刷新
               this.getProduct();
 
@@ -327,10 +428,26 @@ export default {
             }
           })
           .catch((err) => {
-            console.dir(err);
+            // console.dir(err);
+            this.alertMessage = err.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
           });
       } else {
-        alert('標題、分類、單位、原價、售價為必填欄位!');
+        // alert('標題、分類、單位、原價、售價為必填欄位!');
+        this.alertMessage = '標題、分類、單位、原價、售價為必填欄位!';
+        this.alertStatus = false;
+        setTimeout(
+          () => {
+            this.alertMessage = '';
+            this.alertStatus = false;
+          }, 2000,
+        );
       }
     },
     // 一鑑輸入預設商品
@@ -777,12 +894,28 @@ export default {
                 // 刷新
                 this.getProduct();
 
-                alert('已輸入預設商品!');
+                // alert('已輸入預設商品!');
+                this.alertMessage = '已輸入預設商品!';
+                this.alertStatus = true;
+                setTimeout(
+                  () => {
+                    this.alertMessage = '';
+                    this.alertStatus = false;
+                  }, 2000,
+                );
               }
             }
           })
           .catch((err) => {
-            console.dir(err);
+            // console.dir(err);
+            this.alertMessage = err.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
           });
       });
     },
@@ -800,19 +933,32 @@ export default {
           if (res.data.success) {
             this.productDataAll = res.data.products;
           } else {
-            console.log(res.data.message);
+            // console.log(res.data.message);
+            this.alertMessage = res.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
             // window.location='index.html';
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
+          this.alertMessage = err.data.message;
+          this.alertStatus = false;
+          setTimeout(
+            () => {
+              this.alertMessage = '';
+              this.alertStatus = false;
+            }, 2000,
+          );
         });
     },
     // 一鑑刪除全部商品
     OneKeyDelAllProduct() {
-      console.log(this.allProductAry);
-      console.log(this.allProductAry.length);
-
       this.allProductAry.forEach((item, i) => {
         // console.log(item)
         const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product/${item}`;
@@ -824,38 +970,49 @@ export default {
             // 如果成功就執行
             if (res.data.success) {
               // alert(`${res.data.message}`);
-              console.log(i === this.allProductAry.length - 1);
+              // console.log(i === this.allProductAry.length - 1);
 
               if (i === this.allProductAry.length - 1) {
+                this.alertMessage = res.data.message;
+                this.alertStatus = true;
+                setTimeout(
+                  () => {
+                    this.alertMessage = '';
+                    this.alertStatus = false;
+                  }, 2000,
+                );
                 this.getProduct();
-                alert('已刪除全部商品!');
+                // alert('已刪除全部商品!');
               }
             } else {
               // alert(`${res.data.message}`);
+              this.alertMessage = res.data.message;
+              this.alertStatus = false;
+              setTimeout(
+                () => {
+                  this.alertMessage = '';
+                  this.alertStatus = false;
+                }, 2000,
+              );
             }
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
+            this.alertMessage = err.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
           });
       });
     },
     // 清空新增產品的資料
     clearProductData() {
       // 清空新增產品的資料
-      this.addProduct.bg_add_title = '';
-      this.addProduct.bg_add_category = '';
-      this.addProduct.bg_add_origin_price = '';
-      this.addProduct.bg_add_price = '';
-      this.addProduct.bg_add_unit = '';
-      this.addProduct.bg_add_description = '';
-      this.addProduct.bg_add_content = '';
-      this.addProduct.bg_add_is_enabled = false;
-      this.addProduct.imageUrl = '';
-      this.addProduct.imageUrls.url1 = '';
-      this.addProduct.imageUrls.url2 = '';
-      this.addProduct.imageUrls.url3 = '';
-      this.addProduct.imageUrls.url4 = '';
-      this.addProduct.imageUrls.url5 = '';
+      this.$refs.UpLoadImg.$refs.addPrdForm.resetForm();
       // 打開新增產品視窗
       this.$refs.UpLoadImg.openModal();
     },
@@ -895,9 +1052,17 @@ export default {
         .put(url, reditNewData)
         .then((res) => {
           // console.log(res);
-          alert(res.data.message);
+          // alert(res.data.message);
           // 如果成功就執行
           if (res.data.success) {
+            this.alertMessage = res.data.message;
+            this.alertStatus = true;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
             // 刷新
             this.getProduct();
             // 關閉編輯視窗
@@ -905,29 +1070,15 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
-          // alert(err.data.message)
-        });
-    },
-    // 圖片上傳
-    uploadImg() {
-      console.dir(this.$refs.UpLoadImg.$refs.UpLoadImgInp.files[0]);
-      const img = this.$refs.UpLoadImg.$refs.UpLoadImgInp.files[0];
-      const imgFormData = new FormData();
-      imgFormData.append('file-to-upload', img);
-
-      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/upload`;
-      this.$http
-        .post(url, imgFormData)
-        .then((res) => {
-          console.log(res);
-          if (res.data.success) {
-            this.addProduct.imageUrl = res.data.imageUrl;
-          }
-        })
-        .catch((err) => {
-          console.log(err.data);
-          alert(err.data);
+          // console.log(err);
+          this.alertMessage = err.data.message;
+          this.alertStatus = false;
+          setTimeout(
+            () => {
+              this.alertMessage = '';
+              this.alertStatus = false;
+            }, 2000,
+          );
         });
     },
   },
@@ -948,8 +1099,6 @@ export default {
     this.isLoading = true;
     // 取得商品資料
     this.getProduct();
-    // 賦予input,upload時觸發取得圖片網址
-    // this.$refs.UpLoadImg.$refs.UpLoadImgInp.addEventListener('change', this.uploadImg, false);
   },
 };
 </script>

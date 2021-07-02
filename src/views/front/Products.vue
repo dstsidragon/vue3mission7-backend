@@ -94,6 +94,11 @@
       </table>
       <p>此頁面有{{ dataLength }}項產品</p>
     </div>
+
+    <!-- Alert元件 start -->
+    <Alert class="alert-position"  v-if="alertMessage" :message="alertMessage"
+    :status="alertStatus" />
+    <!-- Alert元件 end -->
   </div>
   <!-- 產品列表 end -->
   <!-- 分頁 start -->
@@ -112,6 +117,8 @@
 </template>
 
 <script>
+// Alert元件
+import Alert from '@/components/Alert.vue';
 // 分頁
 import Pagination from '@/components/Pagination.vue';
 // 商品內容
@@ -121,6 +128,8 @@ import Loading from '@/components/Loading.vue';
 
 export default {
   components: {
+    // Alert元件
+    Alert,
     // 分頁
     Pagination,
     // 商品內容
@@ -130,6 +139,9 @@ export default {
   },
   data() {
     return {
+      // alert元件參數
+      alertMessage: '',
+      alertStatus: false,
       // 讀取畫面
       isLoading: false,
       // 產品資料
@@ -157,26 +169,46 @@ export default {
       this.$http
         .get(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products?page=${page}`)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           // 如果成功就執行
           if (res.data.success) {
             this.productData = res.data.products;
             this.pagination = res.data.pagination;
             // console.log(1);
-            console.log(this.productData);
+            // console.log(this.productData);
             // 將資料筆數更新
             this.dataLength = this.productData.length;
             // 關掉讀取畫面
             this.isLoading = false;
           } else {
-            alert('驗證錯誤，請重新登入!');
+            // alert('驗證錯誤，請重新登入!');
+
+            // alert 元件顯示
+            this.alertMessage = res.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
 
             // 跳轉頁面
             this.$router.push('/Login');
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
+
+          // alert 元件顯示
+          this.alertMessage = err.data.message;
+          this.alertStatus = false;
+          setTimeout(
+            () => {
+              this.alertMessage = '';
+              this.alertStatus = false;
+            }, 2000,
+          );
           // 關掉讀取畫面
           this.isLoading = false;
         });
@@ -200,17 +232,47 @@ export default {
           // 如果成功就執行
           if (res.data.success) {
             this.loadingStatue.addCart = '';
-            alert(`${res.data.message}!`);
+            // alert(`${res.data.message}!`);
+
+            // alert 元件顯示
+            this.alertMessage = `${res.data.message}!`;
+            this.alertStatus = true;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
 
             // 刷新購物車
             // this.getCartList();
           } else {
             // console.log(res.data.message)
-            alert(`${res.data.message}!`);
+            // alert(`${res.data.message}!`);
+
+            // alert 元件顯示
+            this.alertMessage = `${res.data.message}!`;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
+
+          // alert 元件顯示
+          this.alertMessage = err.data.message;
+          this.alertStatus = false;
+          setTimeout(
+            () => {
+              this.alertMessage = '';
+              this.alertStatus = false;
+            }, 2000,
+          );
         });
     },
     // 打開商品詳細內容modal
@@ -233,14 +295,34 @@ export default {
             this.loadingStatue.viewContentStatus = '';
             this.$refs.viewContent.openModal();
           } else {
-            alert('驗證錯誤，請重新登入!');
-            console.log(res);
+            // alert('驗證錯誤，請重新登入!');
+            // console.log(res);
+
+            // alert 元件顯示
+            this.alertMessage = '驗證錯誤，請重新登入!';
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
             // 跳轉頁面
             this.$router.push('/Login');
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
+
+          // alert 元件顯示
+          this.alertMessage = err.data.message;
+          this.alertStatus = false;
+          setTimeout(
+            () => {
+              this.alertMessage = '';
+              this.alertStatus = false;
+            }, 2000,
+          );
         });
     },
     // 大量加進購物車
@@ -260,19 +342,48 @@ export default {
           // console.log(res);
           // 如果成功就執行
           if (res.data.success) {
-            alert(`${res.data.message}!`);
-            console.log(res);
+            // alert(`${res.data.message}!`);
+            // console.log(res);
+
+            // alert 元件顯示
+            this.alertMessage = `${res.data.message}!`;
+            this.alertStatus = true;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
             this.$refs.viewContent.closeModal();
 
             // 刷新購物車
             // this.getCartList();
           } else {
             // console.log(res.data.message)
-            alert(`${res.data.message}!`);
+            // alert(`${res.data.message}!`);
+
+            // alert 元件顯示
+            this.alertMessage = `${res.data.message}!`;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
           }
         })
         .catch((err) => {
-          console.dir(err);
+          // console.dir(err);
+          // alert 元件顯示
+          this.alertMessage = err.data.message;
+          this.alertStatus = false;
+          setTimeout(
+            () => {
+              this.alertMessage = '';
+              this.alertStatus = false;
+            }, 2000,
+          );
         });
     },
     // 單一商品詳細內容

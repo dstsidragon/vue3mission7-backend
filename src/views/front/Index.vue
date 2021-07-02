@@ -6,13 +6,13 @@
       <br>
       <p >-勾起你心中的餓</p>
     </div>
-  </div>
   <div class="box"></div>
    <!-- 讀取畫面 start -->
   <div class="container">
   <Loading :isVueLoading='isLoading' />
   </div>
    <!-- 讀取畫面 end -->
+  </div>
 </template>
 
 <script>

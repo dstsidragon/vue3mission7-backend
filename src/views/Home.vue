@@ -56,6 +56,10 @@ bg-transparent sticky-top  ">
   </div>
 </nav>
 
+<!-- Alert元件 start -->
+<Alert class="alert-position"  v-if="alertMessage" :message="alertMessage"
+:status="alertStatus" />
+<!-- Alert元件 end -->
 <Loading></Loading>
    <!-- 登出Modal -->
   <LoginOut ref="signOutUserModal" @sign-out-admin="signOutAdmin"></LoginOut>
@@ -63,18 +67,25 @@ bg-transparent sticky-top  ">
 <router-view/>
 </template>
 <script>
+// Alert元件
+import Alert from '@/components/Alert.vue';
 import LoginOut from '@/components/LoginOut.vue';
 import Loading from '@/components/Loading.vue';
 import $ from 'jquery';
 
 export default {
   components: {
+    // Alert元件
+    Alert,
     // modal-登出
     LoginOut,
     Loading,
   },
   data() {
     return {
+      // alert元件參數
+      alertMessage: '',
+      alertStatus: false,
       // 使用者名稱
       userName: '訪客',
       // 登入/登出鈕
@@ -97,21 +108,48 @@ export default {
           // console.log(res);
           // 如果成功就執行
           if (res.data.success) {
-            alert(res.data.message);
+            // alert(res.data.message);
+          // alert 元件顯示
+            this.alertMessage = res.data.message;
+            this.alertStatus = true;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
 
             // 刪除cookie
             this.deleteAllCookies();
             // 跳轉頁面
             this.$router.push('/Login');
           } else {
-            alert('未知的錯誤!');
+            // alert('未知的錯誤!');
+            // alert 元件顯示
+            this.alertMessage = '未知的錯誤!';
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
 
             // 跳轉頁面
             this.$router.push('/Login');
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
+          // alert 元件顯示
+          this.alertMessage = err.data.message;
+          this.alertStatus = false;
+          setTimeout(
+            () => {
+              this.alertMessage = '';
+              this.alertStatus = false;
+            }, 2000,
+          );
         });
     },
     // 登出Modal

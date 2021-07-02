@@ -21,12 +21,26 @@
       </button>
     </Form>
   </div>
+<!-- Alert元件 start -->
+<Alert class="alert-position"  v-if="alertMessage" :message="alertMessage"
+:status="alertStatus" />
+<!-- Alert元件 end -->
 </template>
 
 <script>
+// Alert元件
+import Alert from '@/components/Alert.vue';
+
 export default {
+  components: {
+    // Alert元件
+    Alert,
+  },
   data() {
     return {
+      // alert元件參數
+      alertMessage: '',
+      alertStatus: false,
       user: {
       },
       email: {
@@ -43,15 +57,39 @@ export default {
           (res) => {
             console.log(res);
             if (res.data.success) {
-              alert(res.data.message);
+              // alert(res.data.message);
+              this.alertMessage = res.data.message;
+              this.alertStatus = true;
+              setTimeout(
+                () => {
+                  this.alertMessage = '';
+                  this.alertStatus = false;
+                }, 2000,
+              );
             } else {
-              alert(res.data.message);
+              // alert(res.data.message);
+              this.alertMessage = res.data.message;
+              this.alertStatus = false;
+              setTimeout(
+                () => {
+                  this.alertMessage = '';
+                  this.alertStatus = false;
+                }, 2000,
+              );
             }
           },
         )
         .catch(
           (err) => {
-            alert(err.data.message);
+            // alert(err.data.message);
+            this.alertMessage = err.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
           },
         );
     },

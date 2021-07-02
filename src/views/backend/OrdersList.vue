@@ -2,8 +2,9 @@
     <h2 class="shadow-sm p-3 mt-1 mb-5 bg-yellow-lighten rounded
      text-primary fz-3 fz-sm-4">訂單列表</h2>
      <div class='container'>
-       <div class="d-flex justify-content-end">
-       <button class="btn btn-danger " @click="deleteAllModal">清空全部訂單</button>
+       <div v-if="pagination.total_pages" class="d-flex justify-content-end">
+       <button class="btn btn-danger " @click="this.$refs.deleteAllModal.openModal()"
+       >清空全部訂單</button>
        </div>
     <table class="table table-hover">
     <thead >
@@ -21,7 +22,7 @@
       <td class="d-none d-md-table-cell col-md-3">{{ $toLocaleDate(item.create_at)}}</td>
       <td class="col-2">{{item.user.name}}</td>
       <td  class="col-3 position-relative d-none d-ssm-table-cell">
-        <div class="order__enable--center">
+        <div class="btn__enable--center">
           <div class='onoffswitch '>
                 <input
                   type='checkbox'
@@ -49,7 +50,7 @@
         </div>
             </td>
       <td class='col-3 position-relative'>
-        <div class="order__del--center">
+        <div class="btn__del--center">
            <button
                 type='button'
                 :id="'getOne_' + i"
@@ -62,7 +63,7 @@
               <button
                 type='button'
                 :id="'delOrder_' + item.id"
-                @click='delOneData'
+                @click='this.$refs.deleteModal.openModal(item)'
                 class='btn btn-sm btn-danger btn-right'
                 :data-id='item.id'
               >
@@ -77,6 +78,10 @@
      <!-- 沒資料的圖片 -->
     <img v-if="orders.length === 0" src="@/assets/images/notfound.png" alt="not found">
 
+  <!-- Alert元件 start -->
+  <Alert class="alert-position"  v-if="alertMessage" :message="alertMessage"
+  :status="alertStatus" />
+  <!-- Alert元件 end -->
   <!-- 訂單Moadal start-->
   <ReditOrderModal ref="reditOrder"
     :redi-datas='rediOrderData'
@@ -88,6 +93,10 @@
     <Pagination :pagination='pagination' @get-product='getOrdersData'></Pagination>
 </div>
   <!-- 分頁 end-->
+
+  <!-- 刪除單一Modal start-->
+  <Delete ref="deleteModal"  @send="delOneData" />
+  <!-- 刪除單一Modal end-->
 
   <!-- 刪除全部Modal start-->
   <DeleteAll ref="deleteAllModal"  @send="deleteAll" />
@@ -102,6 +111,8 @@
 </template>
 
 <script>
+// Alert元件
+import Alert from '@/components/Alert.vue';
 // 分頁
 import Pagination from '@/components/Pagination.vue';
 // 編輯訂單Modal
@@ -110,9 +121,15 @@ import ReditOrderModal from '@/components/ReditOrderModal.vue';
 import DeleteAll from '@/components/DeleteAll.vue';
 // 讀取畫面
 import Loading from '@/components/Loading.vue';
+// 刪除單一Modal
+import Delete from '@/components/Delete.vue';
 
 export default {
   components: {
+    // 刪除單一Modal
+    Delete,
+    // Alert元件
+    Alert,
     // 分頁
     Pagination,
     // 編輯訂單Modal
@@ -124,6 +141,9 @@ export default {
   },
   data() {
     return {
+      // alert元件參數
+      alertMessage: '',
+      alertStatus: false,
       // 訂單資料
       orders: [],
       // 分頁
@@ -144,19 +164,35 @@ export default {
         .get(url)
         .then(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.data.success) {
               this.orders = res.data.orders;
               this.pagination = res.data.pagination;
               this.isLoading = false;
             } else {
-              console.log(res.data.message);
+              // console.log(res.data.message);
+              this.alertMessage = res.data.message;
+              this.alertStatus = false;
+              setTimeout(
+                () => {
+                  this.alertMessage = '';
+                  this.alertStatus = false;
+                }, 2000,
+              );
             }
           },
         )
         .catch(
           (err) => {
-            console.log(err.data.message);
+            // console.log(err.data.message);
+            this.alertMessage = err.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
           },
         );
     },
@@ -181,50 +217,98 @@ export default {
         })
         .then(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.data.success) {
-              alert(res.data.message);
+              // alert(res.data.message);
+              this.alertMessage = res.data.message;
+              this.alertStatus = true;
+              setTimeout(
+                () => {
+                  this.alertMessage = '';
+                  this.alertStatus = false;
+                }, 2000,
+              );
               this.getOrdersData();
             } else {
-              alert(res.data.message);
+              // alert(res.data.message);
+              this.alertMessage = res.data.message;
+              this.alertStatus = false;
+              setTimeout(
+                () => {
+                  this.alertMessage = '';
+                  this.alertStatus = false;
+                }, 2000,
+              );
             }
           },
         )
         .catch(
           (err) => {
-            console.log(err);
+            // console.log(err);
+            this.alertMessage = err.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
           },
         );
     },
     // 刪除單一筆訂單
     delOneData(e) {
-      // console.log(e.target.dataset.id);
-      const { id } = e.target.dataset;
+      console.log(e);
+      const { id } = e;
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/order/${id}`;
       this.$http
         .delete(url)
         .then(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.data.success) {
-              alert(res.data.message);
+              // alert(res.data.message);
+              this.alertMessage = res.data.message;
+              this.alertStatus = true;
+              setTimeout(
+                () => {
+                  this.alertMessage = '';
+                  this.alertStatus = false;
+                }, 2000,
+              );
               // 刷新畫面
               this.getOrdersData();
             } else {
-              alert(res.data.message);
+              // alert(res.data.message);
+              this.alertMessage = res.data.message;
+              this.alertStatus = false;
+              setTimeout(
+                () => {
+                  this.alertMessage = '';
+                  this.alertStatus = false;
+                }, 2000,
+              );
             }
           },
         )
         .catch(
           (err) => {
-            console.log(err.data.message);
+            // console.log(err.data.message);
+            this.alertMessage = err.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
           },
         );
     },
     // 取得編輯訂單
     getOneData(e) {
       const order = JSON.parse(e.target.dataset.item);
-      console.log(order);
+      // console.log(order);
       this.rediOrderData = order;
       this.$refs.reditOrder.openModal();
     },
@@ -248,24 +332,44 @@ export default {
         })
         .then(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.data.success) {
-              alert(res.data.message);
+              // alert(res.data.message);
+              this.alertMessage = res.data.message;
+              this.alertStatus = true;
+              setTimeout(
+                () => {
+                  this.alertMessage = '';
+                  this.alertStatus = false;
+                }, 2000,
+              );
               this.getOrdersData();
             } else {
-              alert(res.data.message);
+              // alert(res.data.message);
+              this.alertMessage = res.data.message;
+              this.alertStatus = false;
+              setTimeout(
+                () => {
+                  this.alertMessage = '';
+                  this.alertStatus = false;
+                }, 2000,
+              );
             }
           },
         )
         .catch(
           (err) => {
-            console.log(err);
+            // console.log(err);
+            this.alertMessage = err.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
           },
         );
-    },
-    // 開啟deleteAll Modal
-    deleteAllModal() {
-      this.$refs.deleteAllModal.openModal();
     },
     // 刪除 全部訂單
     deleteAll() {
@@ -274,19 +378,43 @@ export default {
         .delete(url)
         .then(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.data.success) {
-              alert(res.data.message);
+              // alert(res.data.message);
+              this.alertMessage = res.data.message;
+              this.alertStatus = true;
+              setTimeout(
+                () => {
+                  this.alertMessage = '';
+                  this.alertStatus = false;
+                }, 2000,
+              );
               // 刷新畫面
               this.getOrdersData();
             } else {
-              alert(res.data.message);
+              // alert(res.data.message);
+              this.alertMessage = res.data.message;
+              this.alertStatus = false;
+              setTimeout(
+                () => {
+                  this.alertMessage = '';
+                  this.alertStatus = false;
+                }, 2000,
+              );
             }
           },
         )
         .catch(
           (err) => {
-            console.log(err.data.message);
+            // console.log(err.data.message);
+            this.alertMessage = err.data.message;
+            this.alertStatus = false;
+            setTimeout(
+              () => {
+                this.alertMessage = '';
+                this.alertStatus = false;
+              }, 2000,
+            );
           },
         );
     },
