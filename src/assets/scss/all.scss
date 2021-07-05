@@ -2,6 +2,8 @@
 @import './base/cssReset';
 
 
+// mixin
+@import './mixin/mixin';
 // 字體
 @import './helpers/font';
 
@@ -27,12 +29,11 @@
 @import './components/btn';
 @import './components/btnEnable';
 @import './components/alert';
+@import './components/modal';
 
 // 套件
 @import "~hover.css/css/hover-min";
 
-// mixin
-@import './mixin/mixin';
 
 
 

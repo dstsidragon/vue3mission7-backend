@@ -1,6 +1,6 @@
 <template>
   <!-- 購物車列表 start-->
-  <div class="container mt_5p ">
+  <div class="container mt_navbar ">
     <div class="container">
 
     <!-- Alert元件 start -->
@@ -28,8 +28,8 @@
     <table class="table mt-4 row">
       <thead class="co1-12">
         <tr class="row">
-          <th class="col-3 d-none d-md-table-cell">產品圖片</th>
-          <th class="col-2">產品名稱</th>
+          <th class="col-3 d-none d-md-table-cell">商品圖片</th>
+          <th class="col-2">商品名稱</th>
           <th class="col-2 " width="120">
             原價
           </th>
@@ -49,14 +49,15 @@
           <td class="col-3  d-none d-md-table-cell d-flex align-items-center">
             <img class="prd_img " :src="item.product.imageUrl" :alt="item.product.title" />
           </td>
-          <td class="col-2 d-flex align-items-center">{{ item.product.title }}</td>
-          <td class="col-2 d-flex align-items-center">
-            {{ item.origin_price }}
+          <td class="col-2 d-flex align-items-center justify-content-center">
+            {{ item.product.title }}</td>
+          <td class="col-2 d-flex align-items-center justify-content-center">
+            {{ item.product.origin_price }}
           </td>
-          <td class="col-2 col-md-1 d-flex align-items-center">
+          <td class="col-2 col-md-1 d-flex align-items-center justify-content-center">
             {{ item.product.price }}
           </td>
-          <td class="col-3 col-md-2  d-flex align-items-center">
+          <td class="col-3 col-md-2  d-flex align-items-center justify-content-center">
             <input
               class="carNum"
               type="number"
@@ -66,7 +67,7 @@
               @change="rediCartItemsNum(item)"
             />
           </td>
-          <td class="col-3 col-md-2 d-flex align-items-center">
+          <td class="col-3 col-md-2 d-flex align-items-center justify-content-center">
             <button
               type="button"
               :class="{ disabled: loadingStatue.delCart == item.id }"

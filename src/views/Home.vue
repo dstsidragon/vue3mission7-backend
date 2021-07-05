@@ -226,6 +226,7 @@ export default {
     // 關閉漢堡選單
     closeHamburger() {
       $('#navbarText').removeClass('show');
+      this.btnHamStatus = true;
     },
   },
   created() {
@@ -246,7 +247,6 @@ export default {
 .top-20px{
   top:20px;
 }
-
 .nav-drown{
   border-bottom: 5px solid transparent;
     color: #7f5625 !important;
@@ -281,6 +281,8 @@ export default {
 
     &-img{
     height: 80px !important;
+    color:  red;
+
     @include pc {
     height:60px !important;
     }

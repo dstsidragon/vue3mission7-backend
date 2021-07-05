@@ -28,37 +28,30 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
+前台
+#首頁
+#navBar
+購物車小物件
+帳號  
+收藏
+#產品頁
+選單
+最愛
+收藏
+#購物車
 
 
 後台
 
 #產品頁面：
 
-V串接取得、新增、刪除、更新產品 API
-V啟用狀態顯示
-VModal 細節欄位
-V上傳圖片API 
-V分頁功能
 
 #訂單頁面：
 
-V串接取得
-V刪除
-V刪除全部訂單
-V更新訂單 
-VModal 細節欄位
-V付款狀態切換
-V分頁功能
 
 #優惠券頁面：
 
-V串接取得
-V新增
-V刪除
-V更新優惠券 API
-V啟用狀態顯示
-VModal 細節欄位
-V分頁功能
+
 
 #貼文頁面（加分項目）：
 
@@ -69,13 +62,8 @@ Modal 細節欄位
 登入 / 登出
 
 小功能
-V時間搓轉換
 千分符號
-Valert 元件
-Vloading 元件
-V串接圖片上傳 API
 
-LV3：完成以上功能及撰寫完整的產品文案、圖片
 
 
 
@@ -165,20 +153,3 @@ import DeleteAll from '@/components/DeleteAll.vue';
                 @click='this.$refs.deleteAllModal.openModal();'
 
 //////////
-
-
-前台>>產品>>你可能會喜歡
-https://swiperjs.com/demos#
-
-前台>>產品>>詳細>>圖片
-https://codesandbox.io/s/xntne
-
-前台>>首頁>>滿版介紹
-https://swiperjs.com/demos/360-parallax/core.html
-
-
-前台>>NAVBAR>>手機板
-https://codesandbox.io/s/nqfd2
-
-前台 >> 結帳>>進度條
-https://bootstrap5.hexschool.com/docs/5.0/components/progress/

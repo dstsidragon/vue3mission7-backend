@@ -1,6 +1,9 @@
 /* 推擠 */
-.mt_5p{
-    margin-top: 5% !important;
+.mt_navbar{
+    margin-top: 89px !important;
+    @include pc {
+      margin-top: 66px !important;
+    }
 }
 .mt_90{
     margin-top: 90px;
@@ -103,4 +106,16 @@ box-shadow: -8px -5px 25px #333333;
   // 顏色
   .bg-veryGray{
     background-color: #fdfdfd !important;
+  }
+
+  //圖片
+  .object-fit{
+    object-fit: cover;
+    // @media screen and (min-width:400px) { 
+    //   object-fit: cover;
+    // }
+  }
+  //圖片透明 文字不透明
+  .bg-img-transparent{
+    background:rgba(0,0,0,0.6 );
   }

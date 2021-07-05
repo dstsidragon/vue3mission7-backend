@@ -1,19 +1,22 @@
 <template>
-          <div class="mt-3">
+          <div class="mt_navbar">
               <h2 class="text-center" >
-            產品詳細內容
+            商品詳細介紹
           </h2>
           <div class="card mb-3" >
             <div class="row g-0">
-              <div class="col-md-4">
-                <img class="prd_img_100" :src="product.imageUrl" />
-              </div>
+              <!-- <div class="col-md-4"
+              :style="`height:300px; background:center center no-repeat
+               url(${product.imageUrl});background-size: contain;`">
+              </div> -->
+                <img class="object-fit col-md-4" style="height:360px;weight:100%;"
+                :src="product.imageUrl" />
               <div class="col-md-8">
                 <div class="card-body">
-                  <h3 class="card-title bg-dark">{{ product.title }}</h3>
+                  <h3 class="card-title bg-primary text-white rounded">{{ product.title }}</h3>
                   <p class="card-text">{{ product.description }}</p>
                   <ul class="list-group list-group-flush">
-                    <li class="list-group-item">{{ product.content }}</li>
+                    <li class="list-group-item" v-html="product.content"></li>
                   </ul>
                   <span class="row text-center">
                     <span class="text-decoration-line-through col-6">
@@ -58,6 +61,7 @@ export default {
     };
   },
   methods: {
+    // 取得商品
     getProductData() {
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/product/${this.id}`;
       this.$http
@@ -66,7 +70,7 @@ export default {
           // console.log(res);
           // 如果成功就執行
           if (res.data.success) {
-            // console.log(res.data);
+            console.log(res.data);
 
             // alert 元件顯示
             this.alertMessage = res.data.message;

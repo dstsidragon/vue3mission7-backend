@@ -84,7 +84,7 @@
                 <option>經典麵包</option>
                 <option>西式甜點</option>
                 <option>特調飲品</option>
-                <option>手做餅乾</option>
+                <option>手作餅乾</option>
                 <option>典藏蛋糕</option>
                 </Field>
               <error-message name="分類" class="invalid-feedback"></error-message>

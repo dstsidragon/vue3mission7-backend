@@ -1,6 +1,6 @@
 <template>
   <!-- 訂單列表 start-->
-  <div class="container mt_5p ">
+  <div class="container mt_navbar ">
     <div class="container">
       <h2 class="text-center ">訂單列表</h2>
       <ul>
